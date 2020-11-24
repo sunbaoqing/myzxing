@@ -23,11 +23,11 @@ import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.view.SurfaceHolder;
 
 import java.io.IOException;
 
-import androidx.annotation.RequiresApi;
 
 /**
  * This object wraps the Camera service object and expects to be the only one talking to it. The

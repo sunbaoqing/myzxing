@@ -6,6 +6,7 @@ import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 
 import com.ct.myzxing.camera.BitmapLuminanceSource;
@@ -26,7 +27,6 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import androidx.annotation.RequiresApi;
 
 /**
  * Created by aaron on 16/7/27.
