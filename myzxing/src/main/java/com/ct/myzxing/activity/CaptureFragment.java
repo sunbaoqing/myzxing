@@ -49,7 +49,7 @@ public class CaptureFragment extends Fragment implements SurfaceHolder.Callback 
     private SurfaceView surfaceView;
     private SurfaceHolder surfaceHolder;
     private CodeUtils.AnalyzeCallback analyzeCallback;
-    private Camera camera;
+    public Camera camera;
 
     private int CAMERA_FACING_TYPE;
 
