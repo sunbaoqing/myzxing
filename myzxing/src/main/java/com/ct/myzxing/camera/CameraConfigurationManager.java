@@ -110,7 +110,7 @@ final class CameraConfigurationManager {
         }
 
         List<Camera.Size> previewSizes = params.getSupportedPreviewSizes();
-        if (previewSizes.size() >= 1) {
+        if (previewSizes.size() <= 1) {
             return null;
         }
         Camera.Size size;
