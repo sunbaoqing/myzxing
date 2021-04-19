@@ -153,6 +153,9 @@ public class CaptureFragment extends Fragment implements SurfaceHolder.Callback 
     @RequiresApi(api = Build.VERSION_CODES.ECLAIR)
     public void changeCamera() {
         if (camera != null && CameraManager.get().isPreviewing()) {
+            if (!CameraManager.get().isUseOneShotPreviewCallback()) {
+                camera.setPreviewCallback(null);
+            }
             camera.stopPreview();
 
             if (handler != null) {
@@ -160,9 +163,6 @@ public class CaptureFragment extends Fragment implements SurfaceHolder.Callback 
                 handler = null;
             }
             CameraManager.get().closeDriver();
-            if (!CameraManager.get().isUseOneShotPreviewCallback()) {
-                camera.setPreviewCallback(null);
-            }
 
             CameraManager.get().getPreviewCallback().setHandler(null, 0);
             CameraManager.get().getAutoFocusCallback().setHandler(null, 0);
@@ -221,6 +221,8 @@ public class CaptureFragment extends Fragment implements SurfaceHolder.Callback 
                     camera.setPreviewCallback(null);
                 }
                 camera.stopPreview();
+                camera.release();
+                camera = null;
                 CameraManager.get().getPreviewCallback().setHandler(null, 0);
                 CameraManager.get().getAutoFocusCallback().setHandler(null, 0);
                 CameraManager.get().setPreviewing(false);
