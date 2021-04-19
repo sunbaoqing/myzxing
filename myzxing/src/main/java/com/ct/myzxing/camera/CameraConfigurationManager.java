@@ -88,15 +88,42 @@ final class CameraConfigurationManager {
         Camera.Size size = getCameraPara(camera);
         if (size != null) {
             parameters.setPreviewSize(size.width, size.height);
+            resetCameraResolution(camera,size.width, size.height);
         }else{
             parameters.setPreviewSize(cameraResolution.x, cameraResolution.y);
+            resetCameraResolution(camera,cameraResolution.x, cameraResolution.y);
         }
+
+
         setFlash(parameters);
         setZoom(parameters);
         //setSharpness(parameters);
         //modify here
         camera.setDisplayOrientation(90);
         camera.setParameters(parameters);
+    }
+
+    private void resetCameraResolution(Camera camera,int w,int h) {
+        Camera.Parameters parameters = camera.getParameters();
+        previewFormat = parameters.getPreviewFormat();
+        previewFormatString = parameters.get("preview-format");
+        Log.d(TAG, "Default preview format: " + previewFormat + '/' + previewFormatString);
+        screenResolution = new Point(w, h);
+        Log.d(TAG, "Screen resolution: " + screenResolution);
+
+        Point screenResolutionForCamera = new Point();
+        screenResolutionForCamera.x = screenResolution.x;
+        screenResolutionForCamera.y = screenResolution.y;
+        // preview size is always something like 480*320, other 320*480
+        if (screenResolution.x < screenResolution.y) {
+            screenResolutionForCamera.x = screenResolution.y;
+            screenResolutionForCamera.y = screenResolution.x;
+        }
+        Log.i("#########", "screenX:" + screenResolutionForCamera.x + "   screenY:" + screenResolutionForCamera.y);
+        cameraResolution = getCameraResolution(parameters, screenResolutionForCamera);
+
+        //cameraResolution = getCameraResolution(parameters, screenResolution);
+        Log.d(TAG, "Camera resolution: " + screenResolution);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.ECLAIR)
