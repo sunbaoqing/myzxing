@@ -111,7 +111,15 @@ final class CameraConfigurationManager {
 
         List<Camera.Size> previewSizes = params.getSupportedPreviewSizes();
         if (previewSizes.size() >= 1) {
-            return pictureSizes.get(0);
+            return null;
+        }
+        Camera.Size size;
+        for (int i = 0; i < previewSizes.size(); i++) {
+            size = pictureSizes.get(i);
+            if (size.width > cameraResolution.x || size.height > cameraResolution.y) {
+                continue;
+            }
+            return size;
         }
         return null;
 
