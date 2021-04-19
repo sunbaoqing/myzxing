@@ -67,9 +67,9 @@ final class CameraConfigurationManager {
             screenResolutionForCamera.y = screenResolution.x;
         }
         Log.i("#########", "screenX:" + screenResolutionForCamera.x + "   screenY:" + screenResolutionForCamera.y);
-        cameraResolution = getCameraResolution(parameters, screenResolutionForCamera);
+        //cameraResolution = getCameraResolution(parameters, screenResolutionForCamera);
 
-        // cameraResolution = getCameraResolution(parameters, screenResolution);
+        cameraResolution = getCameraResolution(parameters, screenResolution);
         Log.d(TAG, "Camera resolution: " + screenResolution);
     }
 
