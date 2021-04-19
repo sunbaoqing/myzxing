@@ -20,10 +20,12 @@ import android.content.Context;
 import android.graphics.Point;
 import android.hardware.Camera;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 final class CameraConfigurationManager {
@@ -67,9 +69,9 @@ final class CameraConfigurationManager {
             screenResolutionForCamera.y = screenResolution.x;
         }
         Log.i("#########", "screenX:" + screenResolutionForCamera.x + "   screenY:" + screenResolutionForCamera.y);
-        //cameraResolution = getCameraResolution(parameters, screenResolutionForCamera);
+        cameraResolution = getCameraResolution(parameters, screenResolutionForCamera);
 
-        cameraResolution = getCameraResolution(parameters, screenResolution);
+        //cameraResolution = getCameraResolution(parameters, screenResolution);
         Log.d(TAG, "Camera resolution: " + screenResolution);
     }
 
@@ -79,16 +81,33 @@ final class CameraConfigurationManager {
      * LuminanceSource subclass. In the future we may want to force YUV420SP as it's the smallest,
      * and the planar Y can be used for barcode scanning without a copy in some cases.
      */
+    @RequiresApi(api = Build.VERSION_CODES.FROYO)
     void setDesiredCameraParameters(Camera camera) {
         Camera.Parameters parameters = camera.getParameters();
         Log.d(TAG, "Setting preview size: " + cameraResolution);
         parameters.setPreviewSize(cameraResolution.x, cameraResolution.y);
+        getCameraPara(camera);
         setFlash(parameters);
         setZoom(parameters);
         //setSharpness(parameters);
         //modify here
         camera.setDisplayOrientation(90);
         camera.setParameters(parameters);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.ECLAIR)
+    private void getCameraPara(Camera camera){
+        Camera.Parameters params = camera.getParameters();
+
+        List<Camera.Size> pictureSizes = params.getSupportedPictureSizes();
+        int length = pictureSizes.size();
+        for (int i = 0; i < length; i++) {
+            Log.e("SupportedPictureSizes","SupportedPictureSizes : " + pictureSizes.get(i).width + "x" + pictureSizes.get(i).height);
+        }
+
+        List<Camera.Size> previewSizes = params.getSupportedPreviewSizes();
+        length = previewSizes.size();
+
     }
 
     Point getCameraResolution() {

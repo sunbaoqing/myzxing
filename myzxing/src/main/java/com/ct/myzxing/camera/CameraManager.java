@@ -117,6 +117,7 @@ public final class CameraManager {
      * @param holder The surface object which the camera will draw preview frames into.
      * @throws IOException Indicates the camera driver failed to open.
      */
+    @RequiresApi(api = Build.VERSION_CODES.FROYO)
     public void openDriver(SurfaceHolder holder, int CAMERA_FACING) throws IOException {
         if (camera != null) {
             camera = null;
