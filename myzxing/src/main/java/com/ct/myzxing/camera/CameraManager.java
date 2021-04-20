@@ -256,7 +256,7 @@ public final class CameraManager {
      * not UI / screen.
      */
     public Rect getFramingRectInPreview() {
-        if (framingRectInPreview == null) {
+        //if (framingRectInPreview == null) {
             Rect rect = new Rect(getFramingRect());
             Point cameraResolution = configManager.getCameraResolution();
             Point screenResolution = configManager.getScreenResolution();
@@ -270,7 +270,7 @@ public final class CameraManager {
             rect.top = rect.top * cameraResolution.x / screenResolution.y;
             rect.bottom = rect.bottom * cameraResolution.x / screenResolution.y;
             framingRectInPreview = rect;
-        }
+        //}
         return framingRectInPreview;
     }
 
