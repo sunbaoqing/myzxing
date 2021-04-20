@@ -42,6 +42,8 @@ public final class CameraManager {
     public static int FRAME_HEIGHT = -1;
     public static int FRAME_MARGINTOP = -1;
 
+    public static boolean running = false;
+
     private static CameraManager cameraManager;
 
     static final int SDK_INT; // Later we can use Build.VERSION.SDK_INT
@@ -135,6 +137,8 @@ public final class CameraManager {
             configManager.initFromCameraParameters(camera);
         }
         configManager.setDesiredCameraParameters(camera);
+
+        running = true;
 
         //FIXME
         //     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
