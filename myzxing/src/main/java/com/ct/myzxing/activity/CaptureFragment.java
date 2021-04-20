@@ -155,6 +155,7 @@ public class CaptureFragment extends Fragment implements SurfaceHolder.Callback 
         if (camera != null && CameraManager.get().isPreviewing()) {
             if (!CameraManager.get().isUseOneShotPreviewCallback()) {
                 camera.setPreviewCallback(null);
+                camera.lock();
             }
             camera.stopPreview();
 
@@ -179,6 +180,7 @@ public class CaptureFragment extends Fragment implements SurfaceHolder.Callback 
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.FROYO)
     private void initCamera(SurfaceHolder surfaceHolder) {
         try {
             CameraManager.get().openDriver(surfaceHolder, CAMERA_FACING_TYPE);
