@@ -187,6 +187,7 @@ public class CaptureFragment extends Fragment implements SurfaceHolder.Callback 
         try {
             CameraManager.get().openDriver(surfaceHolder, CAMERA_FACING_TYPE);
             camera = CameraManager.get().getCamera();
+            camera.unlock();
         } catch (Exception e) {
             if (callBack != null) {
                 callBack.callBack(e);
@@ -206,6 +207,7 @@ public class CaptureFragment extends Fragment implements SurfaceHolder.Callback 
                                int height) {
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.FROYO)
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         if (!hasSurface) {
