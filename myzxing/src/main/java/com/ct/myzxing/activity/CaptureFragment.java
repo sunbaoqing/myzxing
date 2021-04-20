@@ -161,10 +161,8 @@ public class CaptureFragment extends Fragment implements SurfaceHolder.Callback 
 
             if (!CameraManager.get().isUseOneShotPreviewCallback()) {
                 camera.setPreviewCallback(null);
-                camera.lock();
             }
             camera.stopPreview();
-
             CameraManager.get().closeDriver();
 
             CameraManager.get().getPreviewCallback().setHandler(null, 0);
@@ -187,7 +185,6 @@ public class CaptureFragment extends Fragment implements SurfaceHolder.Callback 
         try {
             CameraManager.get().openDriver(surfaceHolder, CAMERA_FACING_TYPE);
             camera = CameraManager.get().getCamera();
-            camera.unlock();
         } catch (Exception e) {
             if (callBack != null) {
                 callBack.callBack(e);
