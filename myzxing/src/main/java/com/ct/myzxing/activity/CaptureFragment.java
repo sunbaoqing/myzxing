@@ -221,6 +221,7 @@ public class CaptureFragment extends Fragment implements SurfaceHolder.Callback 
         if (camera != null) {
             if (camera != null && CameraManager.get().isPreviewing()) {
                 if (!CameraManager.get().isUseOneShotPreviewCallback()) {
+                    holder.removeCallback(this);
                     camera.setPreviewCallback(null);
                 }
                 camera.stopPreview();
