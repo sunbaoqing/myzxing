@@ -17,7 +17,6 @@
 package com.ct.myzxing.camera;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import com.google.zxing.LuminanceSource;
 
@@ -42,10 +41,10 @@ public final class PlanarYUVLuminanceSource extends LuminanceSource {
                                     int width, int height) {
         super(width, height);
 
-        Log.d("PlanarYUVLuminance", dataWidth + "," + dataHeight + "," + left + "," + top + "," + width + "," + height);
+        //Log.d("PlanarYUVLuminance", dataWidth + "," + dataHeight + "," + left + "," + top + "," + width + "," + height);
 
         if (left + width > dataWidth || top + height > dataHeight) {
-            throw new IllegalArgumentException("Crop rectangle does not fit within image data.");
+            throw new IllegalArgumentException("Crop rectangle does not fit within image data." + dataWidth + "," + dataHeight + "," + left + "," + top + "," + width + "," + height);
         }
 
         this.yuvData = yuvData;
