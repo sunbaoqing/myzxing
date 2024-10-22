@@ -236,7 +236,7 @@ public final class CameraManager {
                 return null;
             }
 
-            if(Utils.modifySize(context)){
+//            if(Utils.modifySize(context)){
                 int leftOffset = (screenResolution.x - FRAME_WIDTH) / 2;
 
                 int topOffset;
@@ -246,21 +246,21 @@ public final class CameraManager {
                     topOffset = (screenResolution.y - FRAME_HEIGHT) / 2;
                 }
                 framingRect = new Rect(leftOffset, topOffset, leftOffset + FRAME_WIDTH, topOffset + FRAME_HEIGHT);
-
-            }else{
-                int FRAME_W_H = (screenResolution.x > screenResolution.y ? screenResolution.x : screenResolution.y) / 2;
-
-                int leftOffset = (screenResolution.x - FRAME_W_H) / 2;
-
-                int topOffset;
-                if (FRAME_MARGINTOP != -1) {
-                    topOffset = FRAME_MARGINTOP;
-                } else {
-                    topOffset = (screenResolution.y - FRAME_W_H) / 2;
-                }
-                framingRect = new Rect(leftOffset, topOffset, leftOffset + FRAME_W_H, topOffset + FRAME_W_H);
-
-            }
+//
+//            }else{
+//                int FRAME_W_H = (screenResolution.x > screenResolution.y ? screenResolution.x : screenResolution.y) / 2;
+//
+//                int leftOffset = (screenResolution.x - FRAME_W_H) / 2;
+//
+//                int topOffset;
+//                if (FRAME_MARGINTOP != -1) {
+//                    topOffset = FRAME_MARGINTOP;
+//                } else {
+//                    topOffset = (screenResolution.y - FRAME_W_H) / 2;
+//                }
+//                framingRect = new Rect(leftOffset, topOffset, leftOffset + FRAME_W_H, topOffset + FRAME_W_H);
+//
+//            }
             // }
             return framingRect;
         } catch (Exception e) {
