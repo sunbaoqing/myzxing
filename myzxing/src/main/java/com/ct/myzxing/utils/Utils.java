@@ -37,4 +37,15 @@ public class Utils {
         return false;
     }
 
+    /*
+    2020-8-2 02:44:44
+    判断是否是PAX设备*/
+    public static boolean isPAX() {
+//        LoganUtil.w("Build.BRAND:" + Build.BRAND, LoganUtil.SCAN_OTHER);
+        if (Build.BRAND.equals("PAX") || Build.BRAND.equals("qcom")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
