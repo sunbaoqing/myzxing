@@ -249,15 +249,18 @@ public final class CameraManager {
                     framingRect = new Rect(leftOffset, topOffset, leftOffset + FRAME_WIDTH, topOffset + FRAME_HEIGHT);
 
                 }else{
-                    int FRAME_W_H = (screenResolution.x > screenResolution.y ? screenResolution.x : screenResolution.y) / 2;
+                    int FRAME_W_H = (screenResolution.x > screenResolution.y ? screenResolution.y : screenResolution.x) / 2;
 
-                    int leftOffset = (screenResolution.x - FRAME_W_H) / 2;
+                    int shotSide = screenResolution.x > screenResolution.y ? screenResolution.y : screenResolution.x;
+                    int longSide = screenResolution.x > screenResolution.y ? screenResolution.x : screenResolution.y;
+
+                    int leftOffset = (shotSide - FRAME_W_H) / 2;
 
                     int topOffset;
                     if (FRAME_MARGINTOP != -1) {
                         topOffset = FRAME_MARGINTOP;
                     } else {
-                        topOffset = (screenResolution.y - FRAME_W_H) / 2;
+                        topOffset = (longSide - FRAME_W_H) / 2;
                     }
                     framingRect = new Rect(leftOffset, topOffset, leftOffset + FRAME_W_H, topOffset + FRAME_W_H);
 
