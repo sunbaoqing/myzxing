@@ -44,6 +44,12 @@ public final class CameraManager {
     public static int FRAME_HEIGHT = -1;
     public static int FRAME_MARGINTOP = -1;
 
+
+    //解析最小宽度
+    public static int ROI_MIN_WIDTH = 150;
+    //解析最小高度
+    public static int ROI_MIN_HEIGHT = 150;
+
     public static boolean running = false;
 
     private static CameraManager cameraManager;
@@ -227,6 +233,7 @@ public final class CameraManager {
      * far enough away to ensure the image will be in focus.
      *
      * @return The rectangle to draw on screen in window coordinates.
+     *
      */
     public Rect getFramingRect() {
         try {
@@ -266,6 +273,10 @@ public final class CameraManager {
 
                 }
             }else {
+                /**todo
+                 * 1.FRAME_WIDTH FRAME_MARGINTOP FRAME_HEIGHT 没有取到值的情况
+                 * 2.屏幕本身就是横向的
+                 * */
                 int leftOffset = (screenResolution.x - FRAME_WIDTH) / 2;
 
                 int topOffset;
@@ -289,7 +300,7 @@ public final class CameraManager {
      * Like {@link #getFramingRect} but coordinates are in terms of the preview frame,
      * not UI / screen.
      */
-    public Rect getFramingRectInPreview() {
+    public Rect getFramingRectInPreview(int width, int height) {
         //if (framingRectInPreview == null) {
         Rect rect = new Rect(getFramingRect());
         Point cameraResolution = configManager.getCameraResolution();
@@ -305,8 +316,24 @@ public final class CameraManager {
             rect.right = rect.right * cameraResolution.y / screenResolution.x;
             rect.top = rect.top * cameraResolution.x / screenResolution.y;
             rect.bottom = rect.bottom * cameraResolution.x / screenResolution.y;
+
+            //1.48
+            // 限制 ROI 的边界
+            rect.left = Math.max(rect.left, 0);
+            rect.top = Math.max(rect.top, 0);
+            rect.right = Math.min(rect.right, width);
+            rect.bottom = Math.min(rect.bottom, height);
+            // 防止 ROI 的宽度和高度过小
+            int minWidth = ROI_MIN_WIDTH; // 最小宽度
+            int minHeight = ROI_MIN_HEIGHT; // 最小高度
+            if (rect.width() < minWidth) rect.right = rect.left + minWidth;
+            if (rect.height() < minHeight) rect.bottom = rect.top + minHeight;
+
+
         }
         framingRectInPreview = rect;
+
+        //todo 此时，如果结算结果还是异常，需要处理
         //}
         return framingRectInPreview;
     }
@@ -342,7 +369,7 @@ public final class CameraManager {
      * @return A PlanarYUVLuminanceSource instance.
      */
     public PlanarYUVLuminanceSource buildLuminanceSource(byte[] data, int width, int height) {
-        Rect rect = getFramingRectInPreview();
+        Rect rect = getFramingRectInPreview(width, height);
         int previewFormat = configManager.getPreviewFormat();
         String previewFormatString = configManager.getPreviewFormatString();
         switch (previewFormat) {
