@@ -92,6 +92,17 @@ final class CameraConfigurationManager {
         Log.d(TAG, "Setting preview size: " + cameraResolution);
 
         if(Utils.isPAX()){
+            Camera.Size size = getCameraPara(camera);
+            if (size != null) {
+                parameters.setPreviewSize(size.width, size.height);
+                parameters.setPictureSize(size.width, size.height);
+                resetCameraResolution(camera,size.width, size.height);
+            }else{
+                parameters.setPreviewSize(cameraResolution.x, cameraResolution.y);
+                parameters.setPictureSize(cameraResolution.x, cameraResolution.y);
+                resetCameraResolution(camera,cameraResolution.x, cameraResolution.y);
+            }
+        }else{
             if(Utils.modifySize(context)) {
                 parameters.setPreviewSize(cameraResolution.x, cameraResolution.y);
             }else {
@@ -106,8 +117,6 @@ final class CameraConfigurationManager {
                     resetCameraResolution(camera,cameraResolution.x, cameraResolution.y);
                 }
             }
-        }else{
-            parameters.setPreviewSize(cameraResolution.x, cameraResolution.y);
         }
         setFlash(parameters);
         setZoom(parameters);

@@ -6,6 +6,8 @@ import android.os.Build;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.ct.myzxing.camera.CameraManager;
+
 /**
  * @author ted.sun
  * @data 2023/4/14
@@ -48,4 +50,23 @@ public class Utils {
             return false;
         }
     }
+
+    //设置ROI最小区域
+    public static void minWAndH(Point cameraResolution,Point screenResolution) {
+
+        int defaultL = 300;
+
+        if(cameraResolution.x > defaultL && cameraResolution.y > defaultL
+                && screenResolution.x > defaultL && screenResolution.y > defaultL ){
+            int minCameraL = Math.min(cameraResolution.x, cameraResolution.y);
+            int minScreenL = Math.min(screenResolution.x, screenResolution.y);
+
+            int minRoiWAndH = Math.min(minCameraL, minScreenL);
+
+            CameraManager.ROI_MIN_WIDTH = minRoiWAndH/2;
+            CameraManager.ROI_MIN_HEIGHT = minRoiWAndH/2;
+
+        }
+    }
+
 }

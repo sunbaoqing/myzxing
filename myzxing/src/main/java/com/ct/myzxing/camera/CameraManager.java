@@ -244,6 +244,26 @@ public final class CameraManager {
             }
 
             if(Utils.isPAX()){
+                int FRAME_W_H = (screenResolution.x > screenResolution.y ? screenResolution.y : screenResolution.x) / 2;
+
+                int shotSide = screenResolution.x > screenResolution.y ? screenResolution.y : screenResolution.x;
+                int longSide = screenResolution.x > screenResolution.y ? screenResolution.x : screenResolution.y;
+
+                int leftOffset = (shotSide - FRAME_W_H) / 2;
+
+                int topOffset;
+                if (FRAME_MARGINTOP != -1) {
+                    topOffset = FRAME_MARGINTOP;
+                } else {
+                    topOffset = (longSide - FRAME_W_H) / 2;
+                }
+                framingRect = new Rect(leftOffset, topOffset, leftOffset + FRAME_W_H, topOffset + FRAME_W_H);
+
+            }else {
+                /**todo
+                 * 1.FRAME_WIDTH FRAME_MARGINTOP FRAME_HEIGHT 没有取到值的情况
+                 * 2.屏幕本身就是横向的
+                 * */
                 if(Utils.modifySize(context)){
                     int leftOffset = (screenResolution.x - FRAME_WIDTH) / 2;
 
@@ -256,36 +276,19 @@ public final class CameraManager {
                     framingRect = new Rect(leftOffset, topOffset, leftOffset + FRAME_WIDTH, topOffset + FRAME_HEIGHT);
 
                 }else{
-                    int FRAME_W_H = (screenResolution.x > screenResolution.y ? screenResolution.y : screenResolution.x) / 2;
+                    int FRAME_W_H = (screenResolution.x > screenResolution.y ? screenResolution.x : screenResolution.y) / 2;
 
-                    int shotSide = screenResolution.x > screenResolution.y ? screenResolution.y : screenResolution.x;
-                    int longSide = screenResolution.x > screenResolution.y ? screenResolution.x : screenResolution.y;
-
-                    int leftOffset = (shotSide - FRAME_W_H) / 2;
+                    int leftOffset = (screenResolution.x - FRAME_W_H) / 2;
 
                     int topOffset;
                     if (FRAME_MARGINTOP != -1) {
                         topOffset = FRAME_MARGINTOP;
                     } else {
-                        topOffset = (longSide - FRAME_W_H) / 2;
+                        topOffset = (screenResolution.y - FRAME_W_H) / 2;
                     }
                     framingRect = new Rect(leftOffset, topOffset, leftOffset + FRAME_W_H, topOffset + FRAME_W_H);
 
                 }
-            }else {
-                /**todo
-                 * 1.FRAME_WIDTH FRAME_MARGINTOP FRAME_HEIGHT 没有取到值的情况
-                 * 2.屏幕本身就是横向的
-                 * */
-                int leftOffset = (screenResolution.x - FRAME_WIDTH) / 2;
-
-                int topOffset;
-                if (FRAME_MARGINTOP != -1) {
-                    topOffset = FRAME_MARGINTOP;
-                } else {
-                    topOffset = (screenResolution.y - FRAME_HEIGHT) / 2;
-                }
-                framingRect = new Rect(leftOffset, topOffset, leftOffset + FRAME_WIDTH, topOffset + FRAME_HEIGHT);
             }
 
             // }
@@ -319,6 +322,8 @@ public final class CameraManager {
 
             //1.48
             // 限制 ROI 的边界
+            Utils.minWAndH(cameraResolution,screenResolution);
+
             rect.left = Math.max(rect.left, 0);
             rect.top = Math.max(rect.top, 0);
             rect.right = Math.min(rect.right, width);
@@ -329,11 +334,9 @@ public final class CameraManager {
             if (rect.width() < minWidth) rect.right = rect.left + minWidth;
             if (rect.height() < minHeight) rect.bottom = rect.top + minHeight;
 
-
         }
         framingRectInPreview = rect;
 
-        //todo 此时，如果结算结果还是异常，需要处理
         //}
         return framingRectInPreview;
     }
