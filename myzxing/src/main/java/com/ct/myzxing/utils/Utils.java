@@ -51,22 +51,52 @@ public class Utils {
         }
     }
 
-    //设置ROI最小区域
-    public static void minWAndH(Point cameraResolution,Point screenResolution) {
-
-        int defaultL = 300;
-
-        if(cameraResolution.x > defaultL && cameraResolution.y > defaultL
-                && screenResolution.x > defaultL && screenResolution.y > defaultL ){
+    //设置ROI区域为3/5
+    public static int roiWAndH(Point cameraResolution,Point screenResolution) {
+        if(cameraResolution != null &&  screenResolution != null){
             int minCameraL = Math.min(cameraResolution.x, cameraResolution.y);
             int minScreenL = Math.min(screenResolution.x, screenResolution.y);
 
-            int minRoiWAndH = Math.min(minCameraL, minScreenL);
+            int minRoiWAndH = getValidMinValue(minCameraL,minScreenL);
 
-            CameraManager.ROI_MIN_WIDTH = minRoiWAndH/2;
-            CameraManager.ROI_MIN_HEIGHT = minRoiWAndH/2;
-
+            if (minRoiWAndH > 0) {
+                CameraManager.ROI_MIN_WIDTH = (minRoiWAndH * 3) / 5;
+                CameraManager.ROI_MIN_HEIGHT = (minRoiWAndH * 3) / 5;
+                return minRoiWAndH;
+            }
         }
+        return CameraManager.ROI_MIN_WIDTH;
+    }
+
+    //设置ROI最小区域
+    public static void minWAndH(Point cameraResolution,Point screenResolution) {
+        if(cameraResolution != null &&  screenResolution != null){
+            int minCameraL = Math.min(cameraResolution.x, cameraResolution.y);
+            int minScreenL = Math.min(screenResolution.x, screenResolution.y);
+
+            int minRoiWAndH = getValidMinValue(minCameraL,minScreenL);
+
+            if (minRoiWAndH > 0) {
+                CameraManager.ROI_MIN_WIDTH = minRoiWAndH/2;
+                CameraManager.ROI_MIN_HEIGHT = minRoiWAndH/2;
+            }
+        }
+    }
+
+    public static int getValidMinValue(int value1, int value2) {
+        // 忽略小于等于0的值
+        if (value1 <= 0 && value2 <= 0) {
+            return 0;
+        }
+
+        if (value1 <= 0) {
+            return value2;
+        }
+
+        if (value2 <= 0) {
+            return value1;
+        }
+        return Math.min(value1, value2);
     }
 
 }

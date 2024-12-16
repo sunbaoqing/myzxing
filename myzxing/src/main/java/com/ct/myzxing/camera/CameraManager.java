@@ -260,10 +260,16 @@ public final class CameraManager {
                 framingRect = new Rect(leftOffset, topOffset, leftOffset + FRAME_W_H, topOffset + FRAME_W_H);
 
             }else {
-                /**todo
-                 * 1.FRAME_WIDTH FRAME_MARGINTOP FRAME_HEIGHT 没有取到值的情况
-                 * 2.屏幕本身就是横向的
-                 * */
+
+                int roiHAndW = Utils.roiWAndH(configManager.getCameraResolution(),screenResolution);
+
+                int leftOffset = (screenResolution.x - roiHAndW) / 2;
+
+                int topOffset;
+                topOffset = (screenResolution.y - roiHAndW) / 2;
+                framingRect = new Rect(leftOffset, topOffset, leftOffset + roiHAndW, topOffset + roiHAndW);
+
+                /**
                 if(Utils.modifySize(context)){
                     int leftOffset = (screenResolution.x - FRAME_WIDTH) / 2;
 
@@ -289,6 +295,7 @@ public final class CameraManager {
                     framingRect = new Rect(leftOffset, topOffset, leftOffset + FRAME_W_H, topOffset + FRAME_W_H);
 
                 }
+                 **/
             }
 
             // }
