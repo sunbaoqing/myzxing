@@ -57,11 +57,10 @@ public class Utils {
             int minCameraL = Math.min(cameraResolution.x, cameraResolution.y);
             int minScreenL = Math.min(screenResolution.x, screenResolution.y);
 
-            int minRoiWAndH = getValidMinValue(minCameraL,minScreenL);
+            int minWAndH = getValidMinValue(minCameraL,minScreenL);
 
-            if (minRoiWAndH > 0) {
-                CameraManager.ROI_MIN_WIDTH = (minRoiWAndH * 3) / 5;
-                CameraManager.ROI_MIN_HEIGHT = (minRoiWAndH * 3) / 5;
+            if (minWAndH > 0) {
+                int minRoiWAndH = (minWAndH * 3) / 5;
                 return minRoiWAndH;
             }
         }
