@@ -322,10 +322,10 @@ public final class CameraManager {
           rect.bottom = rect.bottom * cameraResolution.y / screenResolution.y;
         }else{
             //remake:test 2024-12-16 16:45:31
-//            rect.left = rect.left * cameraResolution.y / screenResolution.x;
-//            rect.right = rect.right * cameraResolution.y / screenResolution.x;
-//            rect.top = rect.top * cameraResolution.x / screenResolution.y;
-//            rect.bottom = rect.bottom * cameraResolution.x / screenResolution.y;
+            rect.left = rect.left * cameraResolution.y / screenResolution.x;
+            rect.right = rect.right * cameraResolution.y / screenResolution.x;
+            rect.top = rect.top * cameraResolution.x / screenResolution.y;
+            rect.bottom = rect.bottom * cameraResolution.x / screenResolution.y;
 
             //1.48
             // 限制 ROI 的边界

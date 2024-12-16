@@ -103,10 +103,9 @@ final class CameraConfigurationManager {
                 resetCameraResolution(camera,cameraResolution.x, cameraResolution.y);
             }
         }else{
-            //remake:test 2024-12-16 19:18:57
-//            if(Utils.modifySize(context)) {
-//                parameters.setPreviewSize(cameraResolution.x, cameraResolution.y);
-//            }else {
+            if(Utils.modifySize(context)) {
+                parameters.setPreviewSize(cameraResolution.x, cameraResolution.y);
+            }else {
                 Camera.Size size = getCameraPara(camera);
                 if (size != null) {
                     parameters.setPreviewSize(size.width, size.height);
@@ -117,14 +116,13 @@ final class CameraConfigurationManager {
                     parameters.setPictureSize(cameraResolution.x, cameraResolution.y);
                     resetCameraResolution(camera,cameraResolution.x, cameraResolution.y);
                 }
-//            }
+            }
         }
         setFlash(parameters);
         setZoom(parameters);
         //setSharpness(parameters);
         //modify here
-        //remake:test 2024-12-16 16:44:26
-        //camera.setDisplayOrientation(90);
+        camera.setDisplayOrientation(90);
         camera.setParameters(parameters);
     }
 
@@ -141,11 +139,10 @@ final class CameraConfigurationManager {
         screenResolutionForCamera.x = screenResolution.x;
         screenResolutionForCamera.y = screenResolution.y;
         // preview size is always something like 480*320, other 320*480
-        //remake:test 2024-12-16 19:27:56
-//        if (screenResolution.x < screenResolution.y) {
-//            screenResolutionForCamera.x = screenResolution.y;
-//            screenResolutionForCamera.y = screenResolution.x;
-//        }
+        if (screenResolution.x < screenResolution.y) {
+            screenResolutionForCamera.x = screenResolution.y;
+            screenResolutionForCamera.y = screenResolution.x;
+        }
         Log.i("#########", "screenX:" + screenResolutionForCamera.x + "   screenY:" + screenResolutionForCamera.y);
         cameraResolution = getCameraResolution(parameters, screenResolutionForCamera);
 
