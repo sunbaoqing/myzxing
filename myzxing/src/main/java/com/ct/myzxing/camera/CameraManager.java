@@ -26,6 +26,7 @@ import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.view.SurfaceHolder;
 
+import com.ct.myzxing.utils.CameraLog;
 import com.ct.myzxing.utils.Utils;
 
 import java.io.IOException;
@@ -44,6 +45,7 @@ public final class CameraManager {
     public static int FRAME_HEIGHT = -1;
     public static int FRAME_MARGINTOP = -1;
 
+    public static CameraLog cameraLog;
 
     //解析最小宽度
     public static int ROI_MIN_WIDTH = 150;
@@ -129,6 +131,9 @@ public final class CameraManager {
      */
     @RequiresApi(api = Build.VERSION_CODES.FROYO)
     public void openDriver(SurfaceHolder holder, int CAMERA_FACING) throws IOException {
+        //初始化
+        cameraLog = new CameraLog();
+
         if (camera != null) {
             camera = null;
         }
@@ -147,6 +152,7 @@ public final class CameraManager {
         configManager.setDesiredCameraParameters(camera);
 
         running = true;
+
 
         //FIXME
         //     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -268,6 +274,7 @@ public final class CameraManager {
                 int topOffset = (screenResolution.y - roiHAndW) / 2;
                 framingRect = new Rect(leftOffset, topOffset, leftOffset + roiHAndW, topOffset + roiHAndW);
 
+                cameraLog.setFramingRect(framingRect);
                 /**
                 if(Utils.modifySize(context)){
                     int leftOffset = (screenResolution.x - FRAME_WIDTH) / 2;
@@ -315,11 +322,16 @@ public final class CameraManager {
         Point cameraResolution = configManager.getCameraResolution();
         Point screenResolution = configManager.getScreenResolution();
 
+        cameraLog.setCameraResolution(cameraResolution);
+        cameraLog.setScreenResolution(screenResolution);
+
         if(Utils.isPAX()){
           rect.left = rect.left * cameraResolution.x / screenResolution.x;
           rect.right = rect.right * cameraResolution.x / screenResolution.x;
           rect.top = rect.top * cameraResolution.y / screenResolution.y;
           rect.bottom = rect.bottom * cameraResolution.y / screenResolution.y;
+
+          cameraLog.setFramingRectInPreview(rect);
         }else{
             //remake:test 2024-12-16 16:45:31
             rect.left = rect.left * cameraResolution.y / screenResolution.x;
@@ -327,6 +339,7 @@ public final class CameraManager {
             rect.top = rect.top * cameraResolution.x / screenResolution.y;
             rect.bottom = rect.bottom * cameraResolution.x / screenResolution.y;
 
+            cameraLog.setFramingRectInPreview(rect);
             //1.48
             // 限制 ROI 的边界
             Utils.minWAndH(cameraResolution,screenResolution);
@@ -341,6 +354,7 @@ public final class CameraManager {
             if (rect.width() < minWidth) rect.right = rect.left + minWidth;
             if (rect.height() < minHeight) rect.bottom = rect.top + minHeight;
 
+            cameraLog.setCorrectRoiRect(rect);
         }
         framingRectInPreview = rect;
 

@@ -42,6 +42,8 @@ public final class PlanarYUVLuminanceSource extends LuminanceSource {
                                     int width, int height) {
         super(width, height);
 
+        CameraManager.cameraLog.setPlanarYUVLuminance(dataWidth + "," + dataHeight + "," + left + "," + top + "," + width + "," + height);
+
         Log.d("PlanarYUVLuminance", dataWidth + "," + dataHeight + "," + left + "," + top + "," + width + "," + height);
 
         if (left + width > dataWidth || top + height > dataHeight) {
