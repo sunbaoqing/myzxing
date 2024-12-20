@@ -274,7 +274,6 @@ public final class CameraManager {
                 int topOffset = (screenResolution.y - roiHAndW) / 2;
                 framingRect = new Rect(leftOffset, topOffset, leftOffset + roiHAndW, topOffset + roiHAndW);
 
-                cameraLog.setFramingRect(framingRect);
                 /**
                 if(Utils.modifySize(context)){
                     int leftOffset = (screenResolution.x - FRAME_WIDTH) / 2;
@@ -304,6 +303,7 @@ public final class CameraManager {
                  **/
             }
 
+            cameraLog.setFramingRect(framingRect);
             // }
             return framingRect;
         } catch (Exception e) {
@@ -326,36 +326,36 @@ public final class CameraManager {
         cameraLog.setScreenResolution(screenResolution);
 
         if(Utils.isPAX()){
-          rect.left = rect.left * cameraResolution.x / screenResolution.x;
-          rect.right = rect.right * cameraResolution.x / screenResolution.x;
-          rect.top = rect.top * cameraResolution.y / screenResolution.y;
-          rect.bottom = rect.bottom * cameraResolution.y / screenResolution.y;
+            rect.left = rect.left * cameraResolution.x / screenResolution.x;
+            rect.right = rect.right * cameraResolution.x / screenResolution.x;
+            rect.top = rect.top * cameraResolution.y / screenResolution.y;
+            rect.bottom = rect.bottom * cameraResolution.y / screenResolution.y;
 
-          cameraLog.setFramingRectInPreview(rect);
         }else{
-            //remake:test 2024-12-16 16:45:31
             rect.left = rect.left * cameraResolution.y / screenResolution.x;
             rect.right = rect.right * cameraResolution.y / screenResolution.x;
             rect.top = rect.top * cameraResolution.x / screenResolution.y;
             rect.bottom = rect.bottom * cameraResolution.x / screenResolution.y;
 
-            cameraLog.setFramingRectInPreview(rect);
-            //1.48
-            // 限制 ROI 的边界
-            Utils.minWAndH(cameraResolution,screenResolution);
-
-            rect.left = Math.max(rect.left, 0);
-            rect.top = Math.max(rect.top, 0);
-            rect.right = Math.min(rect.right, width);
-            rect.bottom = Math.min(rect.bottom, height);
-            // 防止 ROI 的宽度和高度过小
-            int minWidth = ROI_MIN_WIDTH; // 最小宽度
-            int minHeight = ROI_MIN_HEIGHT; // 最小高度
-            if (rect.width() < minWidth) rect.right = rect.left + minWidth;
-            if (rect.height() < minHeight) rect.bottom = rect.top + minHeight;
-
-            cameraLog.setCorrectRoiRect(rect);
         }
+
+        cameraLog.setFramingRectInPreview(rect);
+        //1.48
+        // 限制 ROI 的边界
+        Utils.minWAndH(cameraResolution,screenResolution);
+
+        rect.left = Math.max(rect.left, 0);
+        rect.top = Math.max(rect.top, 0);
+        rect.right = Math.min(rect.right, width);
+        rect.bottom = Math.min(rect.bottom, height);
+        // 防止 ROI 的宽度和高度过小
+        int minWidth = ROI_MIN_WIDTH; // 最小宽度
+        int minHeight = ROI_MIN_HEIGHT; // 最小高度
+        if (rect.width() < minWidth) rect.right = rect.left + minWidth;
+        if (rect.height() < minHeight) rect.bottom = rect.top + minHeight;
+
+        cameraLog.setCorrectRoiRect(rect);
+
         framingRectInPreview = rect;
 
         //}
